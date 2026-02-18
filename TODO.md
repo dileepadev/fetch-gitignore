@@ -7,8 +7,7 @@ This file tracks tasks, improvements, and features planned for upcoming updates 
 
 ## Upcoming Tasks
 
-- [ ] Add unit tests for `fetcher`, `fileManager`, and `utils` modules.
-- [ ] Improve caching strategy (e.g., expiration time).
+Currently, there are no specific tasks available for the next release.
 
 <!-- Example Task List Format
 

@@ -3,13 +3,12 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
-import path from 'path';
 import process from 'process';
 
 import { fetchTemplate, listTemplates } from '../src/fetcher.js';
 import { writeGitignore } from '../src/fileManager.js';
 import { getFromCache, saveToCache } from '../src/cache.js';
-import { logSuccess, logError, logInfo } from '../src/logger.js';
+import { logSuccess, logError } from '../src/logger.js';
 import { resolveDirectory, mergeTemplates } from '../src/utils.js';
 
 const program = new Command();
@@ -25,10 +24,20 @@ program
 program
   .command('list')
   .description('List available .gitignore templates')
-  .action(async () => {
+  .option('--no-cache', 'Bypass local cache and fetch from GitHub', false)
+  .action(async (options) => {
     const spinner = ora('Fetching available templates...').start();
     try {
-      const templates = await listTemplates();
+      let templates;
+      const cached = options.cache ? getFromCache('templates-list', 'json') : null;
+
+      if (cached) {
+        templates = JSON.parse(cached);
+      } else {
+        templates = await listTemplates();
+        saveToCache('templates-list', JSON.stringify(templates), 'json');
+      }
+
       spinner.stop();
 
       templates.sort().forEach((t) => {
@@ -51,6 +60,7 @@ program
   .option('-d, --dir <path>', 'Target directory', process.cwd())
   .option('-a, --append', 'Append instead of overwrite', false)
   .option('-f, --force', 'Force overwrite if file exists', false)
+  .option('--no-cache', 'Bypass local cache and fetch from GitHub', false)
   .action(async (templates, options) => {
     const targetDir = resolveDirectory(options.dir);
 
@@ -60,7 +70,7 @@ program
       let contents = [];
 
       for (const template of templates) {
-        let content = getFromCache(template);
+        let content = options.cache ? getFromCache(template) : null;
 
         if (!content) {
           content = await fetchTemplate(template);

@@ -8,7 +8,7 @@ Stop manually searching and copy-pasting `.gitignore` content—fetch and save t
 
 - **Dynamic Fetching**: Pulls the latest templates directly from the official GitHub repository.
 - **Multiple Templates**: Combine multiple `.gitignore` templates (e.g., `Node`, `Python`, `Visual Studio Code`).
-- **Caching**: Local caching of templates for faster access and offline use.
+- **Caching**: Local caching of templates and list for faster access and offline use.
 - **Safety**: Prevents accidental overwriting of existing `.gitignore` files unless forced.
 - **Append Mode**: Easily add new rules to your existing `.gitignore`.
 - **Directory Support**: Target any directory, whether it's your current path or a subproject.
@@ -64,8 +64,26 @@ fetch-gitignore add Node Python Rust
 | `--dir <path>` | `-d` | Target directory where `.gitignore` will be saved. | `.` |
 | `--append` | `-a` | Append content to an existing `.gitignore` file. | `false` |
 | `--force` | `-f` | Force overwrite an existing `.gitignore` file. | `false` |
+| `--no-cache` | - | Bypass local cache and fetch directly from GitHub. | `false` |
 | `--help` | `-h` | Display help information. | - |
 | `--version` | `-v` | Display the version number. | - |
+
+### 💾 Cache Configuration
+
+Templates and the template list are cached locally (usually in `~/.fetch-gitignore-cache`) for 24 hours.
+
+You can customize the Time-To-Live (TTL) using an environment variable:
+
+```bash
+# Set cache to expire after 1 hour (3600 seconds)
+export FETCH_GITIGNORE_CACHE_TTL=3600
+```
+
+To disable caching entirely, set it to `0`:
+
+```bash
+export FETCH_GITIGNORE_CACHE_TTL=0
+```
 
 ## 🧪 Local Development & Testing
 
@@ -152,6 +170,13 @@ fetch-gitignore add Node Python React
 
 ```bash
 fetch-gitignore add Node --dir ./backend
+```
+
+#### Force a refresh (bypass cache)
+
+```bash
+fetch-gitignore list --no-cache
+fetch-gitignore add Node --no-cache
 ```
 
 ### 🧠 4. Run Without Linking (Alternative)
