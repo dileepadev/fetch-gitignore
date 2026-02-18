@@ -1,348 +1,242 @@
-# Fetch .gitignore
+# Fetch .gitignore 🛡️
 
-A terminal/CLI tool using Node.js that allows developers to fetch official .gitignore templates from GitHub and save them to their project. This tool will simplify initializing projects with the correct .gitignore and improve developer productivity.
-Here is a **step-by-step developer guideline** to build your `fetch-gitignore` CLI tool using Node.js.
+A professional terminal/CLI tool built with Node.js that simplifies initializing projects with official `.gitignore` templates from the [GitHub gitignore repository](https://github.com/github/gitignore).
 
-We’ll fetch official templates from the **GitHub** repository:
-👉 **github/gitignore**
+Stop manually searching and copy-pasting `.gitignore` content—fetch and save them directly from your terminal!
 
----
+## 🚀 Features
 
-# 🌱 Step-by-Step Developer Guide
+- **Dynamic Fetching**: Pulls the latest templates directly from the official GitHub repository.
+- **Multiple Templates**: Combine multiple `.gitignore` templates (e.g., `Node`, `Python`, `Visual Studio Code`).
+- **Caching**: Local caching of templates for faster access and offline use.
+- **Safety**: Prevents accidental overwriting of existing `.gitignore` files unless forced.
+- **Append Mode**: Easily add new rules to your existing `.gitignore`.
+- **Directory Support**: Target any directory, whether it's your current path or a subproject.
 
----
+## 📦 Installation
 
-# 1️⃣ Initialize the Project
-
-```bash
-mkdir fetch-gitignore
-cd fetch-gitignore
-npm init -y
-```
-
-Install required dependencies:
-
-```bash
-npm install commander node-fetch chalk
-```
-
-(Optional for dev)
-
-```bash
-npm install -D nodemon
-```
-
----
-
-# 2️⃣ Configure CLI Entry Point
-
-### Update `package.json`
-
-Add:
-
-```json
-{
-  "name": "fetch-gitignore",
-  "version": "1.0.0",
-  "bin": {
-    "fetch-gitignore": "./bin/index.js"
-  },
-  "type": "module"
-}
-```
-
-This makes it globally executable.
-
----
-
-# 3️⃣ Create Project Structure
-
-```
-fetch-gitignore/
-│
-├── bin/
-│   └── index.js
-│
-├── lib/
-│   ├── fetchTemplate.js
-│   ├── saveTemplate.js
-│   └── listTemplates.js
-│
-└── cache/
-```
-
----
-
-# 4️⃣ Setup CLI with Commander
-
-### `bin/index.js`
-
-```js
-#!/usr/bin/env node
-
-import { Command } from 'commander';
-import chalk from 'chalk';
-import fetchTemplate from '../lib/fetchTemplate.js';
-import saveTemplate from '../lib/saveTemplate.js';
-import listTemplates from '../lib/listTemplates.js';
-
-const program = new Command();
-
-program
-  .name('fetch-gitignore')
-  .description('CLI to fetch official .gitignore templates')
-  .version('1.0.0');
-
-program
-  .command('list')
-  .description('List available templates')
-  .action(async () => {
-    await listTemplates();
-  });
-
-program
-  .argument('[template]', 'Template name (e.g. Node, Python)')
-  .option('-d, --dir <directory>', 'Target directory', process.cwd())
-  .option('-a, --append', 'Append to existing .gitignore')
-  .action(async (template, options) => {
-    if (!template) {
-      console.log(chalk.red('Please provide a template name.'));
-      return;
-    }
-
-    const content = await fetchTemplate(template);
-    await saveTemplate(content, options.dir, options.append);
-  });
-
-program.parse();
-```
-
-Make executable:
-
-```bash
-chmod +x bin/index.js
-```
-
----
-
-# 5️⃣ Fetch Templates from GitHub
-
-Templates live at:
-
-```
-https://raw.githubusercontent.com/github/gitignore/main/<Template>.gitignore
-```
-
----
-
-### `lib/fetchTemplate.js`
-
-```js
-import fetch from 'node-fetch';
-import fs from 'fs';
-import path from 'path';
-import chalk from 'chalk';
-
-const BASE_URL =
-  'https://raw.githubusercontent.com/github/gitignore/main';
-
-export default async function fetchTemplate(name) {
-  const fileName = `${name}.gitignore`;
-  const url = `${BASE_URL}/${fileName}`;
-
-  try {
-    console.log(chalk.blue(`Fetching ${fileName}...`));
-
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      throw new Error('Template not found');
-    }
-
-    const text = await res.text();
-
-    // Cache template
-    const cachePath = path.join('cache', fileName);
-    fs.writeFileSync(cachePath, text);
-
-    console.log(chalk.green('Template fetched successfully.'));
-    return text;
-  } catch (err) {
-    console.log(chalk.yellow('Using cached version if available...'));
-
-    const cachePath = path.join('cache', fileName);
-
-    if (fs.existsSync(cachePath)) {
-      return fs.readFileSync(cachePath, 'utf8');
-    }
-
-    console.log(chalk.red(err.message));
-    process.exit(1);
-  }
-}
-```
-
----
-
-# 6️⃣ Save or Append to `.gitignore`
-
-### `lib/saveTemplate.js`
-
-```js
-import fs from 'fs';
-import path from 'path';
-import chalk from 'chalk';
-
-export default async function saveTemplate(content, dir, append) {
-  const targetPath = path.join(dir, '.gitignore');
-
-  if (fs.existsSync(targetPath) && !append) {
-    console.log(
-      chalk.yellow('.gitignore exists. Use --append to append instead.')
-    );
-    return;
-  }
-
-  if (append) {
-    fs.appendFileSync(targetPath, '\n' + content);
-    console.log(chalk.green('Appended to existing .gitignore'));
-  } else {
-    fs.writeFileSync(targetPath, content);
-    console.log(chalk.green('Created .gitignore successfully.'));
-  }
-}
-```
-
----
-
-# 7️⃣ Implement `list` Command
-
-To list templates dynamically, fetch repository contents from GitHub API:
-
-```
-https://api.github.com/repos/github/gitignore/contents
-```
-
----
-
-### `lib/listTemplates.js`
-
-```js
-import fetch from 'node-fetch';
-import chalk from 'chalk';
-
-export default async function listTemplates() {
-  const url =
-    'https://api.github.com/repos/github/gitignore/contents';
-
-  const res = await fetch(url);
-  const data = await res.json();
-
-  const templates = data
-    .filter(file => file.name.endsWith('.gitignore'))
-    .map(file => file.name.replace('.gitignore', ''));
-
-  console.log(chalk.blue('Available templates:\n'));
-  templates.forEach(t => console.log(chalk.green(t)));
-}
-```
-
----
-
-# 8️⃣ Test Locally
-
-Link globally:
-
-```bash
-npm link
-```
-
-Test:
-
-```bash
-fetch-gitignore Node
-fetch-gitignore Python --append
-fetch-gitignore list
-```
-
----
-
-# 9️⃣ Publish to npm
-
-Login:
-
-```bash
-npm login
-```
-
-Publish:
-
-```bash
-npm publish --access public
-```
-
-Users can now install globally:
+To use `fetch-gitignore` as a global CLI tool, install it via npm:
 
 ```bash
 npm install -g fetch-gitignore
 ```
 
----
-
-# 🔟 Optional Improvements (Recommended)
-
-## ✅ Auto-detect existing .gitignore type
-
-## ✅ Add multiple template support
+Or run it instantly using `npx`:
 
 ```bash
-fetch-gitignore Node,React,macOS
+npx fetch-gitignore list
+npx fetch-gitignore add Node
 ```
 
-## ✅ Add interactive mode
+## 🛠️ Usage
 
-Use `inquirer`
+### 1. List Available Templates
 
-## ✅ Add GitHub API rate-limit handling
+To see all templates available in the official GitHub repository:
 
-## ✅ Add template search feature
+```bash
+fetch-gitignore list
+```
 
-## ✅ Add unit tests (Jest)
+### 2. Add a Template
 
----
+To create a new `.gitignore` file for your project:
 
-# 🏗 Architecture Summary
+```bash
+fetch-gitignore add <TemplateName>
+```
 
-| Feature         | Implementation           |
-| --------------- | ------------------------ |
-| CLI Parsing     | commander                |
-| HTTP Fetch      | node-fetch               |
-| Terminal Colors | chalk                    |
-| Caching         | Local `/cache` folder    |
-| Global Command  | package.json `bin` field |
+*Example: `fetch-gitignore add Node`*
 
----
+### 3. Combine Multiple Templates
 
-# 🚀 Final Result
+You can pass multiple template names to merge them into a single `.gitignore` file:
 
-You’ll have a production-ready CLI tool that:
+```bash
+fetch-gitignore add Node Python React
+```
 
-* Fetches official templates from **GitHub**
-* Uses **github/gitignore**
-* Works offline with caching
-* Supports append mode
-* Lists available templates
-* Is globally installable
+### 4. Options
 
----
+| Option | Shorthand | Description | Default |
+| :--- | :--- | :--- | :--- |
+| `--dir <path>` | `-d` | Target directory where `.gitignore` will be saved. | `.` |
+| `--append` | `-a` | Append content to an existing `.gitignore` file. | `false` |
+| `--force` | `-f` | Force overwrite an existing `.gitignore` file. | `false` |
+| `--help` | `-h` | Display help information. | - |
+| `--version` | `-v` | Display the version number. | - |
 
-If you'd like, I can next provide:
+## 🧪 Local Development & Testing
 
-* 🧪 Unit testing setup
-* 📦 Professional project structure (enterprise level)
-* 🔥 Add TypeScript version
-* 🛠 Convert to ESM + Axios
-* 📄 Add README template for publishing
-* 🚀 CI/CD setup for npm publish
+This guide explains how to test `fetch-gitignore` locally before publishing to npm.
 
-Just tell me what level you want to take it to.
+### 📦 Prerequisites
+
+- Node.js ≥ 18
+- npm ≥ 9
+
+Check your version:
+
+```bash
+node -v
+npm -v
+```
+
+### 🔧 1. Install Dependencies
+
+From the project root:
+
+```bash
+npm install
+```
+
+### 🔗 2. Link the CLI Globally (Recommended)
+
+This simulates installing the package globally via `npm install -g`.
+
+```bash
+npm link
+```
+
+This creates a global symlink so you can run:
+
+```bash
+fetch-gitignore
+```
+
+from anywhere on your system.
+
+### 🧪 3. Test the CLI
+
+Move to any test directory:
+
+```bash
+mkdir test-cli
+cd test-cli
+```
+
+Then try:
+
+#### List available templates
+
+```bash
+fetch-gitignore list
+```
+
+#### Create a `.gitignore` file
+
+```bash
+fetch-gitignore add Node
+```
+
+#### Append to existing `.gitignore`
+
+```bash
+fetch-gitignore add Python --append
+```
+
+#### Overwrite existing `.gitignore`
+
+```bash
+fetch-gitignore add Node --force
+```
+
+#### Add multiple templates
+
+```bash
+fetch-gitignore add Node Python React
+```
+
+#### Specify target directory
+
+```bash
+fetch-gitignore add Node --dir ./backend
+```
+
+### 🧠 4. Run Without Linking (Alternative)
+
+If you don’t want to use `npm link`, you can run the CLI directly:
+
+```bash
+node bin/index.js list
+```
+
+or
+
+```bash
+node bin/index.js add Node
+```
+
+### 📦 5. Test as a Packed npm Module (Production Simulation)
+
+To simulate a real npm installation:
+
+```bash
+npm pack
+```
+
+This generates a `.tgz` file like:
+
+```text
+fetch-gitignore-1.0.0.tgz
+```
+
+Then install it globally:
+
+```bash
+npm install -g ./fetch-gitignore-1.0.0.tgz
+```
+
+Now test it as if it were published.
+
+### 🧹 6. Unlink When Done
+
+To remove the global symlink:
+
+```bash
+npm unlink -g fetch-gitignore
+```
+
+## 🏗️ Architecture
+
+- **Commander.js**: Powering the CLI command and argument parsing.
+- **Node-Fetch**: Used to retrieve template data from GitHub APIs.
+- **Chalk & Ora**: Creating a beautiful, interactive terminal experience.
+- **File System (fs)**: Reliable management of `.gitignore` files and local caching.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please check our **[CONTRIBUTING.md](CONTRIBUTING.md)** for guidelines on how to get started.
+
+## 📜 License
+
+Distributed under the MIT License. See **[LICENSE](LICENSE)** for more information.
+
+## 🐛 Troubleshooting
+
+### Command not found?
+
+Make sure `npm link` ran successfully. You can verify it with:
+
+```bash
+which fetch-gitignore
+```
+
+### Permission issues (macOS/Linux)
+
+Ensure your CLI entry file is executable:
+
+```bash
+chmod +x bin/index.js
+```
+
+## 🚀 Development Workflow
+
+During development:
+
+1. Edit code
+2. Run `fetch-gitignore`
+3. Test behavior
+4. Repeat
+
+Because `npm link` creates a symlink, changes apply immediately — no reinstall required.
