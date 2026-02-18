@@ -7,16 +7,35 @@ const API_BASE =
   'https://api.github.com/repos/github/gitignore/contents';
 
 /**
+ * Handle HTTP Response and check for rate limits
+ */
+async function handleResponse(res, errorMessage) {
+  if (res.status === 403 || res.status === 429) {
+    const resetTime = res.headers.get('x-ratelimit-reset');
+    if (resetTime) {
+      const date = new Date(parseInt(resetTime) * 1000);
+      const waitMinutes = Math.ceil((date.getTime() - Date.now()) / 60000);
+      throw new Error(
+        `GitHub API rate limit exceeded. Please try again in ${waitMinutes} minute(s).`
+      );
+    }
+  }
+
+  if (!res.ok) {
+    throw new Error(errorMessage || `Request failed with status ${res.status}`);
+  }
+
+  return res;
+}
+
+/**
  * Fetch a single template by name
  */
 export async function fetchTemplate(name) {
   const url = `${RAW_BASE}/${name}.gitignore`;
 
   const res = await fetch(url);
-
-  if (!res.ok) {
-    throw new Error(`Template "${name}" not found.`);
-  }
+  await handleResponse(res, `Template "${name}" not found.`);
 
   return await res.text();
 }
@@ -26,10 +45,7 @@ export async function fetchTemplate(name) {
  */
 export async function listTemplates() {
   const res = await fetch(API_BASE);
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch template list from GitHub.');
-  }
+  await handleResponse(res, 'Failed to fetch template list from GitHub.');
 
   const data = await res.json();
 

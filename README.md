@@ -12,6 +12,7 @@ Stop manually searching and copy-pasting `.gitignore` content—fetch and save t
 - **Safety**: Prevents accidental overwriting of existing `.gitignore` files unless forced.
 - **Append Mode**: Easily add new rules to your existing `.gitignore`.
 - **Directory Support**: Target any directory, whether it's your current path or a subproject.
+- **Rate Limit Handling**: Smartly handles GitHub API rate limits and provides clear feedback on when to retry.
 
 ## 📦 Installation
 
@@ -53,7 +54,7 @@ fetch-gitignore add <TemplateName>
 You can pass multiple template names to merge them into a single `.gitignore` file:
 
 ```bash
-fetch-gitignore add Node Python React
+fetch-gitignore add Node Python Rust
 ```
 
 ### 4. Options
