@@ -14,3 +14,15 @@ export async function fetchTemplate(name) {
 
   return await response.text();
 }
+
+export async function listTemplates() {
+  const res = await fetch(
+    'https://api.github.com/repos/github/gitignore/contents'
+  );
+
+  const data = await res.json();
+
+  return data
+    .filter(file => file.name.endsWith('.gitignore'))
+    .map(file => file.name.replace('.gitignore', ''));
+}
