@@ -17,6 +17,10 @@
     "fetch-gitignore": "./bin/index.js"
   },
   "type": "module",
+  "files": [
+    "bin",
+    "src"
+  ],
   "bugs": {
     "url": "https://github.com/dileepadev/fetch-gitignore/issues"
   },
