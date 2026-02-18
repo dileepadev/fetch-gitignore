@@ -1,28 +1,39 @@
 import fetch from 'node-fetch';
 
-const BASE_URL =
+const RAW_BASE =
   'https://raw.githubusercontent.com/github/gitignore/main';
 
+const API_BASE =
+  'https://api.github.com/repos/github/gitignore/contents';
+
+/**
+ * Fetch a single template by name
+ */
 export async function fetchTemplate(name) {
-  const url = `${BASE_URL}/${name}.gitignore`;
+  const url = `${RAW_BASE}/${name}.gitignore`;
 
-  const response = await fetch(url);
+  const res = await fetch(url);
 
-  if (!response.ok) {
+  if (!res.ok) {
     throw new Error(`Template "${name}" not found.`);
   }
 
-  return await response.text();
+  return await res.text();
 }
 
+/**
+ * List available templates via GitHub API
+ */
 export async function listTemplates() {
-  const res = await fetch(
-    'https://api.github.com/repos/github/gitignore/contents'
-  );
+  const res = await fetch(API_BASE);
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch template list from GitHub.');
+  }
 
   const data = await res.json();
 
   return data
-    .filter(file => file.name.endsWith('.gitignore'))
-    .map(file => file.name.replace('.gitignore', ''));
+    .filter((file) => file.name.endsWith('.gitignore'))
+    .map((file) => file.name.replace('.gitignore', ''));
 }
