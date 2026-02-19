@@ -2,8 +2,9 @@
   "name": "fetch-gitignore",
   "version": "1.0.0",
   "description": "A terminal/CLI tool using Node.js that allows developers to fetch official .gitignore templates from GitHub and save them to their project. This tool will simplify initializing projects with the correct .gitignore and improve developer productivity.",
-  "main": "index.js",
+  "main": "./dist/bin/index.js",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -14,12 +15,11 @@
   "author": "",
   "license": "ISC",
   "bin": {
-    "fetch-gitignore": "./bin/index.js"
+    "fetch-gitignore": "./dist/bin/index.js"
   },
   "type": "module",
   "files": [
-    "bin",
-    "src"
+    "dist"
   ],
   "bugs": {
     "url": "https://github.com/dileepadev/fetch-gitignore/issues"
@@ -32,6 +32,8 @@
     "ora": "^9.3.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "@types/node": "^24.5.2",
+    "nodemon": "^3.1.11",
+    "typescript": "^5.9.2"
   }
 }

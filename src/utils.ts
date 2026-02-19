@@ -1,7 +1,7 @@
-import path from 'path';
-import fs from 'fs';
+import path from "path";
+import fs from "fs";
 
-export function resolveDirectory(dir) {
+export function resolveDirectory(dir: string): string {
   const resolved = path.resolve(dir);
 
   if (!fs.existsSync(resolved)) {
@@ -11,10 +11,10 @@ export function resolveDirectory(dir) {
   return resolved;
 }
 
-export function mergeTemplates(contents) {
+export function mergeTemplates(contents: string[]): string {
   return contents
     .map((content, index) => {
       return `# ===== Template ${index + 1} =====\n${content.trim()}\n`;
     })
-    .join('\n');
+    .join("\n");
 }

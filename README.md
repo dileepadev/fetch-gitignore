@@ -109,6 +109,12 @@ From the project root:
 npm install
 ```
 
+Build the TypeScript sources:
+
+```bash
+npm run build
+```
+
 ### 🔗 2. Link the CLI Globally (Recommended)
 
 This simulates installing the package globally via `npm install -g`.
@@ -184,13 +190,13 @@ fetch-gitignore add Node --no-cache
 If you don’t want to use `npm link`, you can run the CLI directly:
 
 ```bash
-node bin/index.js list
+node dist/bin/index.js list
 ```
 
 or
 
 ```bash
-node bin/index.js add Node
+node dist/bin/index.js add Node
 ```
 
 ### 📦 5. Test as a Packed npm Module (Production Simulation)
@@ -253,7 +259,7 @@ which fetch-gitignore
 Ensure your CLI entry file is executable:
 
 ```bash
-chmod +x bin/index.js
+chmod +x dist/bin/index.js
 ```
 
 ## 🚀 Development Workflow
@@ -261,8 +267,9 @@ chmod +x bin/index.js
 During development:
 
 1. Edit code
-2. Run `fetch-gitignore`
-3. Test behavior
-4. Repeat
+2. Run `npm run build`
+3. Run `fetch-gitignore`
+4. Test behavior
+5. Repeat
 
 Because `npm link` creates a symlink, changes apply immediately — no reinstall required.
