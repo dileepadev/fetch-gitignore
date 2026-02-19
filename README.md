@@ -4,6 +4,48 @@ A professional terminal/CLI tool built with Node.js that simplifies initializing
 
 Stop manually searching and copy-pasting `.gitignore` content—fetch and save them directly from your terminal!
 
+Here’s an **updated Table of Contents (TOC)** for your README that now includes all the new sections (`Running Tests`, `Architecture`, `Contributing`, `License`, `Troubleshooting`, `Development Workflow`) in a clean, navigable way:
+
+## Table of Contents
+
+- [Fetch .gitignore 🛡️](#fetch-gitignore-️)
+  - [Table of Contents](#table-of-contents)
+  - [🚀 Features](#-features)
+  - [📦 Installation](#-installation)
+  - [🛠️ Usage](#️-usage)
+    - [1. List Available Templates](#1-list-available-templates)
+    - [2. Add a Template](#2-add-a-template)
+    - [3. Combine Multiple Templates](#3-combine-multiple-templates)
+    - [4. Options](#4-options)
+    - [💾 Cache Configuration](#-cache-configuration)
+  - [🧪 Local Development \& Testing](#-local-development--testing)
+    - [📦 Prerequisites](#-prerequisites)
+    - [🔧 1. Install Dependencies](#-1-install-dependencies)
+    - [🔗 2. Link the CLI Globally (Recommended)](#-2-link-the-cli-globally-recommended)
+    - [🧪 3. Test the CLI](#-3-test-the-cli)
+      - [List available templates](#list-available-templates)
+      - [Create a `.gitignore` file](#create-a-gitignore-file)
+      - [Append to existing `.gitignore`](#append-to-existing-gitignore)
+      - [Overwrite existing `.gitignore`](#overwrite-existing-gitignore)
+      - [Add multiple templates](#add-multiple-templates)
+      - [Specify target directory](#specify-target-directory)
+      - [Force a refresh (bypass cache)](#force-a-refresh-bypass-cache)
+    - [🧠 4. Run Without Linking (Alternative)](#-4-run-without-linking-alternative)
+    - [📦 5. Test as a Packed npm Module (Production Simulation)](#-5-test-as-a-packed-npm-module-production-simulation)
+    - [🧹 6. Unlink When Done](#-6-unlink-when-done)
+  - [🧪 Running Tests](#-running-tests)
+    - [Run All Tests](#run-all-tests)
+    - [Run Tests in Watch Mode](#run-tests-in-watch-mode)
+    - [Run Tests with Coverage](#run-tests-with-coverage)
+    - [Test Structure](#test-structure)
+  - [🏗️ Architecture](#️-architecture)
+  - [🤝 Contributing](#-contributing)
+  - [📜 License](#-license)
+  - [🐛 Troubleshooting](#-troubleshooting)
+    - [Command not found?](#command-not-found)
+    - [Permission issues (macOS/Linux)](#permission-issues-macoslinux)
+  - [🚀 Development Workflow](#-development-workflow)
+
 ## 🚀 Features
 
 - **Dynamic Fetching**: Pulls the latest templates directly from the official GitHub repository.
@@ -229,12 +271,47 @@ To remove the global symlink:
 npm unlink -g fetch-gitignore
 ```
 
+## 🧪 Running Tests
+
+This project uses [Vitest](https://vitest.dev/) for unit and integration testing.
+
+### Run All Tests
+
+```bash
+npm test
+```
+
+### Run Tests in Watch Mode
+
+```bash
+npm run test:watch
+```
+
+### Run Tests with Coverage
+
+```bash
+npm run test:coverage
+```
+
+### Test Structure
+
+| Test File | Module | Description |
+| :--- | :--- | :--- |
+| `tests/utils.test.ts` | `resolveDirectory`, `mergeTemplates` | Directory resolution, template merging, edge cases |
+| `tests/logger.test.ts` | `logSuccess`, `logError`, `logInfo` | Stdout/stderr routing, message content |
+| `tests/fileManager.test.ts` | `writeGitignore` | Create, overwrite, append, conflict errors |
+| `tests/cache.test.ts` | `saveToCache`, `getFromCache` | Save/load, TTL logic, env var overrides |
+| `tests/fetcher.test.ts` | `fetchTemplate`, `listTemplates` | Mocked HTTP: success, 404, rate limits, response parsing |
+| `tests/cli.test.ts` | CLI binary | `--help`, `--version`, subcommands, error handling |
+
 ## 🏗️ Architecture
 
+- **TypeScript**: Strict, type-safe codebase compiled to ESM.
 - **Commander.js**: Powering the CLI command and argument parsing.
 - **Node-Fetch**: Used to retrieve template data from GitHub APIs.
 - **Chalk & Ora**: Creating a beautiful, interactive terminal experience.
 - **File System (fs)**: Reliable management of `.gitignore` files and local caching.
+- **Vitest**: Fast, TypeScript-native test framework for unit and integration tests.
 
 ## 🤝 Contributing
 

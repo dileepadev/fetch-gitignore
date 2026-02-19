@@ -12,6 +12,13 @@
     "resolveJsonModule": true,
     "declaration": true
   },
-  "include": ["bin/**/*.ts", "src/**/*.ts"],
-  "exclude": ["dist", "node_modules"]
+  "include": [
+    "bin/**/*.ts",
+    "src/**/*.ts",
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }

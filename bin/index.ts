@@ -62,11 +62,10 @@ program
       templates: string[],
       options: { dir: string; append: boolean; force: boolean; cache: boolean },
     ) => {
-      const targetDir = resolveDirectory(options.dir);
-
       const spinner = ora("Fetching template(s)...").start();
 
       try {
+        const targetDir = resolveDirectory(options.dir);
         const contents: string[] = [];
 
         for (const template of templates) {
