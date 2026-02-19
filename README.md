@@ -4,8 +4,6 @@ A professional terminal/CLI tool built with Node.js that simplifies initializing
 
 Stop manually searching and copy-pasting `.gitignore` content—fetch and save them directly from your terminal!
 
-Here’s an **updated Table of Contents (TOC)** for your README that now includes all the new sections (`Running Tests`, `Architecture`, `Contributing`, `License`, `Troubleshooting`, `Development Workflow`) in a clean, navigable way:
-
 ## Table of Contents
 
 - [Fetch .gitignore 🛡️](#fetch-gitignore-️)
