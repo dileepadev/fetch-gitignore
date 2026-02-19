@@ -17,18 +17,23 @@ Changes are organized into the following categories:
 
 ### Added
 
-- **`fetch-gitignore list`** command to list all available official `.gitignore` templates from GitHub.
-- **`fetch-gitignore add <templates...>`** command to fetch and save one or more `.gitignore` templates.
-- `--dir` / `-d` option to specify the target directory.
-- `--append` / `-a` option to append to an existing `.gitignore` file.
-- `--force` / `-f` option to overwrite an existing `.gitignore` file.
-- `--no-cache` option to bypass the local cache and fetch directly from GitHub.
-- Local caching of templates and template list (default TTL: 24 hours).
-- `FETCH_GITIGNORE_CACHE_TTL` environment variable for configuring cache time-to-live.
-- Multi-template merging with numbered section headers.
-- GitHub API rate limit detection with helpful retry messages.
-- Colorized terminal output using Chalk and Ora spinner.
-- Full Vitest unit and integration test suite.
+- Built a Node.js CLI tool called `fetch-gitignore` using TypeScript.
+- Support fetching `.gitignore` templates by name from [github/gitignore](https://github.com/github/gitignore).
+- Save the fetched template as `.gitignore` in the current directory.
+- Save the fetched template as `.gitignore` in a selected directory via `--dir` / `-d`.
+- Option to append to an existing `.gitignore` instead of overwriting via `--append` / `-a`.
+- **`fetch-gitignore list`** command to show all available templates.
+- **`fetch-gitignore add <templates...>`** command to fetch and save one or more templates.
+- Clear terminal feedback with colorized output using [Chalk](https://github.com/chalk/chalk).
+- Made the CLI globally executable via npm (`npm install -g fetch-gitignore`).
+- Template validation — throws a clear error when a template name is not found.
+- `--force` / `-f` flag to overwrite an existing `.gitignore` file.
+- Multiple templates support — combine several templates into a single `.gitignore` with numbered section headers.
+- Spinner feedback using [Ora](https://github.com/sindresorhus/ora) while fetching templates.
+- Rate-limit handling — detects GitHub API 403/429 responses and reports how long to wait before retrying.
+- `--no-cache` option to bypass local cache and fetch directly from GitHub.
+- Local caching of templates and template list (default TTL: 24 hours) with `FETCH_GITIGNORE_CACHE_TTL` environment variable support.
+- Full Vitest unit and integration test suite covering all modules and the CLI binary.
 
 <!-- e.g., -->
 <!-- Unreleased -->
