@@ -13,15 +13,30 @@
     "type": "git",
     "url": "git+https://github.com/dileepadev/fetch-gitignore.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "gitignore",
+    "cli",
+    "terminal",
+    "github",
+    "templates",
+    "fetch",
+    "nodejs",
+    "tool",
+    "developer-tools"
+  ],
+  "author": "Dileepa Bandara",
+  "license": "MIT",
   "bin": {
     "fetch-gitignore": "./dist/bin/index.js"
   },
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "files": [
-    "dist"
+    "dist/bin",
+    "dist/src"
   ],
   "bugs": {
     "url": "https://github.com/dileepadev/fetch-gitignore/issues"
