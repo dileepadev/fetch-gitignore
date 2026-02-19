@@ -106,7 +106,7 @@ fetch-gitignore add Node Python Rust
 | `--force` | `-f` | Force overwrite an existing `.gitignore` file. | `false` |
 | `--no-cache` | - | Bypass local cache and fetch directly from GitHub. | `false` |
 | `--help` | `-h` | Display help information. | - |
-| `--version` | `-v` | Display the version number. | - |
+| `--version` | `-V` | Display the version number. | - |
 
 ### 💾 Cache Configuration
 
