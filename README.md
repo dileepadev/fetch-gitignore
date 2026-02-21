@@ -59,14 +59,14 @@ Stop manually searching and copy-pasting `.gitignore` content—fetch and save t
 To use `fetch-gitignore` as a global CLI tool, install it via npm:
 
 ```bash
-npm install -g fetch-gitignore
+npm install -g @dileepadev/fetch-gitignore
 ```
 
 Or run it instantly using `npx`:
 
 ```bash
-npx fetch-gitignore list
-npx fetch-gitignore add Node
+npx @dileepadev/fetch-gitignore list
+npx @dileepadev/fetch-gitignore add Node
 ```
 
 ## 🛠️ Usage
@@ -250,13 +250,13 @@ npm pack
 This generates a `.tgz` file like:
 
 ```text
-fetch-gitignore-1.0.0.tgz
+dileepadev-fetch-gitignore-1.0.0.tgz
 ```
 
 Then install it globally:
 
 ```bash
-npm install -g ./fetch-gitignore-1.0.0.tgz
+npm install -g ./dileepadev-fetch-gitignore-1.0.0.tgz
 ```
 
 Now test it as if it were published.
@@ -266,7 +266,7 @@ Now test it as if it were published.
 To remove the global symlink:
 
 ```bash
-npm unlink -g fetch-gitignore
+npm unlink -g @dileepadev/fetch-gitignore
 ```
 
 ## 🧪 Running Tests

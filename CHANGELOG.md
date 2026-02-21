@@ -25,7 +25,7 @@ Changes are organized into the following categories:
 - **`fetch-gitignore list`** command to show all available templates.
 - **`fetch-gitignore add <templates...>`** command to fetch and save one or more templates.
 - Clear terminal feedback with colorized output using [Chalk](https://github.com/chalk/chalk).
-- Made the CLI globally executable via npm (`npm install -g fetch-gitignore`).
+- Made the CLI globally executable via npm (`npm install -g @dileepadev/fetch-gitignore`).
 - Template validation — throws a clear error when a template name is not found.
 - `--force` / `-f` flag to overwrite an existing `.gitignore` file.
 - Multiple templates support — combine several templates into a single `.gitignore` with numbered section headers.
