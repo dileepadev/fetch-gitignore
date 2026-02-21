@@ -13,6 +13,12 @@ Changes are organized into the following categories:
 
 - Changes for the next release are available in development branches.
 
+## [1.0.1] - 2026-02-21
+
+### Fixed
+
+- Bump version to 1.0.1 for safe republishing after accidental npm unpublish of v1.0.0.
+
 ## [1.0.0] - 2026-02-21
 
 ### Added
@@ -42,5 +48,6 @@ Changes are organized into the following categories:
 <!-- v1.0.0 -->
 <!-- v0.0.1 -->
 
-[Unreleased]: https://github.com/dileepadev/fetch-gitignore/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/dileepadev/fetch-gitignore/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/dileepadev/fetch-gitignore/releases/tag/v1.0.1
 [1.0.0]: https://github.com/dileepadev/fetch-gitignore/releases/tag/v1.0.0

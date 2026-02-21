@@ -250,13 +250,13 @@ npm pack
 This generates a `.tgz` file like:
 
 ```text
-dileepadev-fetch-gitignore-1.0.0.tgz
+dileepadev-fetch-gitignore-1.0.1.tgz
 ```
 
 Then install it globally:
 
 ```bash
-npm install -g ./dileepadev-fetch-gitignore-1.0.0.tgz
+npm install -g ./dileepadev-fetch-gitignore-1.0.1.tgz
 ```
 
 Now test it as if it were published.
