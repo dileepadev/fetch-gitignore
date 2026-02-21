@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { spawnSync } from "child_process";
 import path from "path";
+import fs from "fs";
 
 const CLI_PATH = path.resolve("dist/bin/index.js");
 
@@ -32,7 +33,8 @@ describe("CLI integration", () => {
   it("should show version with --version flag", () => {
     const { stdout, exitCode } = runCli(["--version"]);
     expect(exitCode).toBe(0);
-    expect(stdout.trim()).toMatch(/^\d+\.\d+\.\d+$/);
+    const packageJson = JSON.parse(fs.readFileSync(path.resolve("package.json"), "utf-8"));
+    expect(stdout.trim()).toBe(packageJson.version);
   });
 
   it("should show help for list subcommand", () => {

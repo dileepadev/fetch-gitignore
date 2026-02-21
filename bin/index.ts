@@ -4,6 +4,9 @@ import { Command } from "commander";
 import chalk from "chalk";
 import ora from "ora";
 import process from "process";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import { fetchTemplate, listTemplates } from "../src/fetcher.js";
 import { writeGitignore } from "../src/fileManager.js";
@@ -11,12 +14,21 @@ import { getFromCache, saveToCache } from "../src/cache.js";
 import { logSuccess, logError } from "../src/logger.js";
 import { resolveDirectory, mergeTemplates } from "../src/utils.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const packageJsonPath = fs.existsSync(path.join(__dirname, "../package.json"))
+  ? path.join(__dirname, "../package.json")
+  : path.join(__dirname, "../../package.json");
+
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
+
 const program = new Command();
 
 program
   .name("fetch-gitignore")
   .description("Fetch official .gitignore templates from GitHub")
-  .version("1.0.0");
+  .version(packageJson.version);
 
 program
   .command("list")

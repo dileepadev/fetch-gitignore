@@ -13,15 +13,21 @@ Changes are organized into the following categories:
 
 - Changes for the next release are available in development branches.
 
+## [1.0.2] - 2026-02-21
+
+### Fixed - v1.0.2
+
+- Read CLI version dynamically from `package.json` instead of using a hardcoded string.
+
 ## [1.0.1] - 2026-02-21
 
-### Fixed
+### Fixed - v1.0.1
 
 - Bump version to 1.0.1 for safe republishing after accidental npm unpublish of v1.0.0.
 
 ## [1.0.0] - 2026-02-21
 
-### Added
+### Added - v1.0.0
 
 - Built a Node.js CLI tool called `fetch-gitignore` using TypeScript.
 - Support fetching `.gitignore` templates by name from [github/gitignore](https://github.com/github/gitignore).
@@ -48,6 +54,7 @@ Changes are organized into the following categories:
 <!-- v1.0.0 -->
 <!-- v0.0.1 -->
 
-[Unreleased]: https://github.com/dileepadev/fetch-gitignore/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/dileepadev/fetch-gitignore/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/dileepadev/fetch-gitignore/releases/tag/v1.0.2
 [1.0.1]: https://github.com/dileepadev/fetch-gitignore/releases/tag/v1.0.1
 [1.0.0]: https://github.com/dileepadev/fetch-gitignore/releases/tag/v1.0.0
